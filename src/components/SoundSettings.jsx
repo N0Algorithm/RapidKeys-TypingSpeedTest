@@ -1,4 +1,5 @@
-import { memo } from 'react';
+import { memo, useState, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 
 /**
  * SoundSettings - Advanced sound settings panel
@@ -106,8 +107,17 @@ const SoundSettings = memo(({
         </h3>
     );
 
-    return (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm animate-in fade-in duration-200">
+    // Portal target check
+    const [mounted, setMounted] = useState(false);
+    useEffect(() => {
+        setMounted(true);
+        return () => setMounted(false);
+    }, []);
+
+    if (!mounted) return null;
+
+    return createPortal(
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/95 backdrop-blur-sm animate-in fade-in duration-200">
             <div
                 className="w-full max-w-md mx-4 bg-[var(--color-bg-primary)] border border-white/10 rounded-xl shadow-2xl overflow-hidden animate-in zoom-in-95 duration-200"
                 onClick={(e) => e.stopPropagation()}
@@ -216,7 +226,8 @@ const SoundSettings = memo(({
                     </button>
                 </div>
             </div>
-        </div>
+        </div>,
+        document.body
     );
 });
 

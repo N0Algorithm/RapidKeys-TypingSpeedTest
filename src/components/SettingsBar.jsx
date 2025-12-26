@@ -1,4 +1,5 @@
-import { memo, useState } from 'react';
+import { memo, useState, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 
 const SettingsBar = memo(({
     mode, setMode,
@@ -28,69 +29,96 @@ const SettingsBar = memo(({
         }`;
 
     // --- MOBILE MENU (Full Screen Modal) ---
-    const MobileMenu = () => (
-        <div
-            className={`fixed inset-0 z-50 bg-[var(--color-bg-primary)]/95 backdrop-blur-md flex flex-col items-center justify-center p-8 transition-all duration-200 ease-out ${mobileMenuOpen ? 'opacity-100 translate-y-0 pointer-events-auto' : 'opacity-0 translate-y-4 pointer-events-none'
-                }`}
-        >
-            {/* Close Button */}
-            <button
-                onClick={() => setMobileMenuOpen(false)}
-                className="absolute top-6 right-6 text-text-secondary hover:text-text-primary text-2xl transition-colors"
-                aria-label="Close Settings"
-            >
-                ✕
-            </button>
+    const MobileMenu = () => {
+        // Portal target check
+        const [mounted, setMounted] = useState(false);
+        useEffect(() => {
+            setMounted(true);
+            return () => setMounted(false);
+        }, []);
 
-            <div className="flex flex-col gap-6 w-full max-w-xs">
-                {/* Mode Selection */}
-                <div className="flex flex-col gap-2">
-                    <span className="text-xs uppercase tracking-widest text-text-secondary opacity-60 mb-1">Mode</span>
-                    <div className="flex gap-2 justify-center">
-                        <button onClick={() => { setMode('time'); setConfig(60); }} className={modeBtnClass(mode === 'time')}>Time</button>
-                        <button onClick={() => { setMode('words'); setConfig(25); }} className={modeBtnClass(mode === 'words')}>Words</button>
-                        <button onClick={() => { setMode('quote'); setConfig('medium'); }} className={modeBtnClass(mode === 'quote')}>Quotes</button>
+        if (!mobileMenuOpen || !mounted) return null;
+
+        return createPortal(
+            <div
+                className="fixed inset-0 z-[100] bg-[var(--color-bg-primary)] backdrop-blur-md flex flex-col items-center justify-center p-8 transition-all duration-200 ease-out animate-in fade-in"
+            >
+                {/* Close Button */}
+                <button
+                    onClick={() => setMobileMenuOpen(false)}
+                    className="absolute top-6 right-6 text-text-secondary hover:text-text-primary text-2xl transition-colors p-4"
+                    aria-label="Close Settings"
+                >
+                    ✕
+                </button>
+
+                <div className="flex flex-col gap-6 w-full max-w-xs">
+                    {/* Mode Selection */}
+                    <div className="flex flex-col gap-2">
+                        <span className="text-xs uppercase tracking-widest text-text-secondary opacity-60 mb-1">Mode</span>
+                        <div className="flex gap-2 justify-center">
+                            <button onClick={() => { setMode('time'); setConfig(60); }} className={modeBtnClass(mode === 'time')}>Time</button>
+                            <button onClick={() => { setMode('words'); setConfig(25); }} className={modeBtnClass(mode === 'words')}>Words</button>
+                            <button onClick={() => { setMode('quote'); setConfig('medium'); }} className={modeBtnClass(mode === 'quote')}>Quotes</button>
+                        </div>
+                    </div>
+
+                    {/* Duration/Word Count */}
+                    {mode !== 'quote' && (
+                        <div className="flex flex-col gap-2">
+                            <span className="text-xs uppercase tracking-widest text-text-secondary opacity-60 mb-1">{mode === 'time' ? 'Duration' : 'Word Count'}</span>
+                            <div className="flex gap-2 justify-center flex-wrap">
+                                {(mode === 'time' ? [15, 30, 60, 120] : [10, 25, 50, 100]).map(val => (
+                                    <button key={val} onClick={() => setConfig(val)} className={modeBtnClass(config === val)}>{val}</button>
+                                ))}
+                            </div>
+                        </div>
+                    )}
+
+                    {/* Quote Length */}
+                    {mode === 'quote' && (
+                        <div className="flex flex-col gap-2">
+                            <span className="text-xs uppercase tracking-widest text-text-secondary opacity-60 mb-1">Quote Length</span>
+                            <div className="flex gap-2 justify-center">
+                                {['short', 'medium', 'long'].map(len => (
+                                    <button key={len} onClick={() => setConfig(len)} className={modeBtnClass(config === len)}>{len}</button>
+                                ))}
+                            </div>
+                        </div>
+                    )}
+
+                    {/* Toggles */}
+                    {mode !== 'quote' && (
+                        <div className="flex flex-col gap-2">
+                            <span className="text-xs uppercase tracking-widest text-text-secondary opacity-60 mb-1">Options</span>
+                            <div className="flex gap-2 justify-center flex-wrap">
+                                <button onClick={() => setIncludePunctuation(p => !p)} className={toggleBtnClass(includePunctuation)}>.,!? Punctuation</button>
+                                <button onClick={() => setIncludeNumbers(n => !n)} className={toggleBtnClass(includeNumbers)}># Numbers</button>
+                                <button onClick={() => setConfidenceMode(c => !c)} className={toggleBtnClass(confidenceMode, 'red')}>⚡ Confidence</button>
+                            </div>
+                        </div>
+                    )}
+
+                    {/* Sound Settings */}
+                    <div className="flex flex-col gap-2">
+                        <span className="text-xs uppercase tracking-widest text-text-secondary opacity-60 mb-1">Sound</span>
+                        <div className="flex gap-2 justify-center">
+                            <button
+                                onClick={() => {
+                                    onSoundSettingsClick();
+                                    setMobileMenuOpen(false);
+                                }}
+                                className={modeBtnClass(soundStyle !== 'off')}
+                            >
+                                <span className="text-sm px-2">sound: {soundStyle}</span>
+                            </button>
+                        </div>
                     </div>
                 </div>
-
-                {/* Duration/Word Count */}
-                {mode !== 'quote' && (
-                    <div className="flex flex-col gap-2">
-                        <span className="text-xs uppercase tracking-widest text-text-secondary opacity-60 mb-1">{mode === 'time' ? 'Duration' : 'Word Count'}</span>
-                        <div className="flex gap-2 justify-center flex-wrap">
-                            {(mode === 'time' ? [15, 30, 60, 120] : [10, 25, 50, 100]).map(val => (
-                                <button key={val} onClick={() => setConfig(val)} className={modeBtnClass(config === val)}>{val}</button>
-                            ))}
-                        </div>
-                    </div>
-                )}
-
-                {/* Quote Length */}
-                {mode === 'quote' && (
-                    <div className="flex flex-col gap-2">
-                        <span className="text-xs uppercase tracking-widest text-text-secondary opacity-60 mb-1">Quote Length</span>
-                        <div className="flex gap-2 justify-center">
-                            {['short', 'medium', 'long'].map(len => (
-                                <button key={len} onClick={() => setConfig(len)} className={modeBtnClass(config === len)}>{len}</button>
-                            ))}
-                        </div>
-                    </div>
-                )}
-
-                {/* Toggles */}
-                {mode !== 'quote' && (
-                    <div className="flex flex-col gap-2">
-                        <span className="text-xs uppercase tracking-widest text-text-secondary opacity-60 mb-1">Options</span>
-                        <div className="flex gap-2 justify-center flex-wrap">
-                            <button onClick={() => setIncludePunctuation(p => !p)} className={toggleBtnClass(includePunctuation)}>.,!? Punctuation</button>
-                            <button onClick={() => setIncludeNumbers(n => !n)} className={toggleBtnClass(includeNumbers)}># Numbers</button>
-                            <button onClick={() => setConfidenceMode(c => !c)} className={toggleBtnClass(confidenceMode, 'red')}>⚡ Confidence</button>
-                        </div>
-                    </div>
-                )}
-            </div>
-        </div>
-    );
+            </div>,
+            document.body
+        );
+    };
 
     // --- DESKTOP BAR (Inline) ---
     const DesktopBar = () => (

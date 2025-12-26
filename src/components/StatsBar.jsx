@@ -12,7 +12,9 @@ export const StatsBar = ({ status, timeLeft, duration, statsRef }) => {
         const interval = setInterval(() => {
             const { correct, incorrect } = statsRef.current;
             const total = correct + incorrect;
-            const timeElapsed = duration - timeLeft;
+            // For time mode (duration > 0), elapsed = duration - timeLeft
+            // For words/quote mode (duration = 0), elapsed = timeLeft (timer counts up)
+            const timeElapsed = duration > 0 ? duration - timeLeft : timeLeft;
 
             // Prevent division by zero or negative time spikes
             if (timeElapsed > 0) {

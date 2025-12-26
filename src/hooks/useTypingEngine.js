@@ -323,6 +323,13 @@ export const useTypingEngine = (status, startTest, endTest, resetTest, mode, con
 
         // Dispatch typing sound event (picked up by useTypingSound hook)
         window.dispatchEvent(new CustomEvent('typing-sound'));
+
+        // CHECK FOR TEST COMPLETION (Quote / Words mode)
+        // If we just finished typing the last character of the last word
+        if (mode !== 'time' && wordIdx === words.length - 1 && cursor.current.charIndex === currentWordChars.length) {
+            window.dispatchEvent(new CustomEvent('test-complete'));
+            endTest();
+        }
     }, [words, mode, config, confidenceMode, endTest, addExtraChar]);
 
 
