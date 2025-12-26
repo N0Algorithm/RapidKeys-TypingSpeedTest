@@ -1,0 +1,106 @@
+@import "tailwindcss";
+
+@theme {
+  --font-mono: 'Roboto Mono', monospace;
+
+  /* RapidKeys 'INK DARK' Theme - Focus & Readability First */
+
+  /* Base Colors */
+  --color-bg-primary: #0F1115;
+  --color-bg-secondary: #161821;
+
+  /* Typing Text */
+  --color-text-primary: #E6E8EE;
+  --color-text-secondary: #6F7487;
+
+  /* Feedback Colors */
+  --color-correct: #E6E8EE;
+  --color-incorrect: #E05F65;
+  --color-extra: #E3A35D;
+
+  /* Accents */
+  --color-caret: #F4C430;
+  --color-accent: #F4C430;
+}
+
+body {
+  @apply bg-[#0F1115] text-[#E6E8EE] min-h-screen selection:bg-[#F4C43040] selection:text-white;
+  font-family: var(--font-mono), ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+}
+
+/* Smooth layout transitions */
+.smooth-transform {
+  transition-property: transform;
+  will-change: transform;
+}
+
+/* Caret Animation - Crisp, no blur */
+@keyframes blink {
+
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0;
+  }
+}
+
+.animate-blink {
+  animation: blink 1s infinite;
+}
+
+/* Caret - Removed heavy glow, kept solid block/line */
+.caret-glow {
+  /* Minimal spread for visibility without 'fog' */
+  box-shadow: 0 0 2px var(--color-caret);
+}
+
+/* 
+  State classes applied by JS 
+  REMOVED: Text shadows, glows, and transitions that cause blur
+*/
+.text-correct {
+  @apply text-[#E6E8EE];
+}
+
+.text-incorrect {
+  @apply text-[#E05F65];
+}
+
+.text-extra {
+  @apply text-[#E3A35D];
+}
+
+
+/* Clean UI - Removed Vignette/Gradient Haze */
+/* If a vignette is strictly needed for focus, it should be barely visible. 
+   Removing it entirely based on "No haze, no fog" instruction. */
+.vignette {
+  display: none;
+}
+
+/* Custom Dark Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #0F1115;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #2a2d35;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #3a3d45;
+}
+
+/* Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #2a2d35 #0F1115;
+}
