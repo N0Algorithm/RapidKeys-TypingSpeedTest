@@ -17,6 +17,17 @@ export const useSystem = () => {
     const [includeNumbers, setIncludeNumbers] = useState(false);
     const [confidenceMode, setConfidenceMode] = useState(false); // Confidence Mode State
 
+    // Sound Settings
+    const [soundStyle, setSoundStyle] = useState('tick'); // 'tick' | 'smooth' | 'thud' | 'clacky' | 'thock' | 'beep' | 'off'
+    const [masterVolume, setMasterVolume] = useState(0.5);
+    const [keyVolume, setKeyVolume] = useState(0.8);
+    const [enableRelease, setEnableRelease] = useState(false);
+    const [enableError, setEnableError] = useState(true);
+    const [enableWordComplete, setEnableWordComplete] = useState(false);
+    const [enableTestComplete, setEnableTestComplete] = useState(true);
+    const [enableVariation, setEnableVariation] = useState(true);
+    const [variationIntensity, setVariationIntensity] = useState(0.5);
+
     // Timer State
     const [timer, setTimer] = useState(30); // Display value
     const timerRef = useRef(null);
@@ -33,6 +44,49 @@ export const useSystem = () => {
             historyRef.current = [];
         }
     }, [config, mode, status]);
+
+    // Load sound settings from localStorage
+    useEffect(() => {
+        try {
+            const saved = localStorage.getItem('rapidkeys_sound_settings');
+            if (saved) {
+                const settings = JSON.parse(saved);
+                if (settings.soundStyle && ['tick', 'smooth', 'thud', 'clacky', 'thock', 'beep', 'off'].includes(settings.soundStyle)) {
+                    setSoundStyle(settings.soundStyle);
+                }
+                if (typeof settings.masterVolume === 'number') setMasterVolume(settings.masterVolume);
+                if (typeof settings.keyVolume === 'number') setKeyVolume(settings.keyVolume);
+                if (typeof settings.enableRelease === 'boolean') setEnableRelease(settings.enableRelease);
+                if (typeof settings.enableError === 'boolean') setEnableError(settings.enableError);
+                if (typeof settings.enableWordComplete === 'boolean') setEnableWordComplete(settings.enableWordComplete);
+                if (typeof settings.enableTestComplete === 'boolean') setEnableTestComplete(settings.enableTestComplete);
+                if (typeof settings.enableVariation === 'boolean') setEnableVariation(settings.enableVariation);
+                if (typeof settings.variationIntensity === 'number') setVariationIntensity(settings.variationIntensity);
+            }
+        } catch (e) {
+            console.error('Failed to load sound settings', e);
+        }
+    }, []);
+
+    // Persist sound settings to localStorage
+    useEffect(() => {
+        try {
+            const settings = {
+                soundStyle,
+                masterVolume,
+                keyVolume,
+                enableRelease,
+                enableError,
+                enableWordComplete,
+                enableTestComplete,
+                enableVariation,
+                variationIntensity
+            };
+            localStorage.setItem('rapidkeys_sound_settings', JSON.stringify(settings));
+        } catch (e) {
+            console.error('Failed to save sound settings', e);
+        }
+    }, [soundStyle, masterVolume, keyVolume, enableRelease, enableError, enableWordComplete, enableTestComplete, enableVariation, variationIntensity]);
 
     const startTest = useCallback(() => {
         if (status !== 'idle' && status !== 'paused') return;
@@ -139,6 +193,26 @@ export const useSystem = () => {
         setIncludeNumbers,
         confidenceMode,
         setConfidenceMode,
+        // Sound settings
+        soundStyle,
+        setSoundStyle,
+        masterVolume,
+        setMasterVolume,
+        keyVolume,
+        setKeyVolume,
+        enableRelease,
+        setEnableRelease,
+        enableError,
+        setEnableError,
+        enableWordComplete,
+        setEnableWordComplete,
+        enableTestComplete,
+        setEnableTestComplete,
+        enableVariation,
+        setEnableVariation,
+        variationIntensity,
+        setVariationIntensity,
+        // Actions
         startTest,
         endTest,
         resetTest,

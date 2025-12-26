@@ -6,6 +6,8 @@ const SettingsBar = memo(({
     includePunctuation, setIncludePunctuation,
     includeNumbers, setIncludeNumbers,
     confidenceMode, setConfidenceMode,
+    soundStyle,
+    onSoundSettingsClick,
     status
 }) => {
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -93,7 +95,7 @@ const SettingsBar = memo(({
     // --- DESKTOP BAR (Inline) ---
     const DesktopBar = () => (
         <div
-            className="hidden md:flex items-center justify-center gap-4 lg:gap-8 mb-8 p-3 rounded-lg bg-black/20 backdrop-blur-sm border border-white/5 animate-in fade-in slide-in-from-top-4 duration-500"
+            className="hidden md:flex items-center justify-center gap-2 lg:gap-6 mb-8 p-2 rounded-lg bg-black/20 backdrop-blur-sm border border-white/5 animate-in fade-in slide-in-from-top-4 duration-500"
             role="toolbar"
             aria-label="Test Settings"
         >
@@ -134,6 +136,18 @@ const SettingsBar = memo(({
                     <button key={len} onClick={() => setConfig(len)} className={modeBtnClass(config === len)} style={{ textTransform: 'capitalize' }} tabIndex={-1}>{len}</button>
                 ))}
             </div>
+
+            <div className="w-px h-4 bg-white/10" role="separator" />
+
+            {/* Sound Settings Button */}
+            <button
+                onClick={onSoundSettingsClick}
+                className={modeBtnClass(soundStyle !== 'off')}
+                title="Sound Settings"
+                tabIndex={-1}
+            >
+                <span className="text-sm whitespace-nowrap">sound: {soundStyle}</span>
+            </button>
         </div>
     );
 

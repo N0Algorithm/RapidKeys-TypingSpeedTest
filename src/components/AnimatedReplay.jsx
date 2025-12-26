@@ -13,8 +13,9 @@ const KEYBOARD_LAYOUT = [
     { special: [{ key: 'Ctrl', width: 'w-10' }, { key: 'Alt', width: 'w-10' }], keys: [], specialEnd: [{ key: 'Alt', width: 'w-10' }, { key: 'Ctrl', width: 'w-10' }] }
 ];
 
-export const AnimatedReplay = ({ typedWords }) => {
+export const AnimatedReplay = ({ typedWords, playSound }) => {
     const [isPlaying, setIsPlaying] = useState(false);
+    const [isMuted, setIsMuted] = useState(false);
     const [currentWordIdx, setCurrentWordIdx] = useState(0);
     const [currentCharIdx, setCurrentCharIdx] = useState(0);
     const [activeKey, setActiveKey] = useState(null);
@@ -69,6 +70,7 @@ export const AnimatedReplay = ({ typedWords }) => {
         if (currentCharIdx < currentWord.chars.length) {
             const char = currentWord.chars[currentCharIdx].toLowerCase();
             setActiveKey(char);
+            if (!isMuted && playSound) playSound();
 
             timeoutRef.current = setTimeout(() => {
                 setCurrentCharIdx(prev => prev + 1);
@@ -76,6 +78,7 @@ export const AnimatedReplay = ({ typedWords }) => {
         } else {
             // Move to next word (space press)
             setActiveKey(' ');
+            if (!isMuted && playSound) playSound();
             timeoutRef.current = setTimeout(() => {
                 setCurrentWordIdx(prev => prev + 1);
                 setCurrentCharIdx(0);
@@ -181,12 +184,12 @@ export const AnimatedReplay = ({ typedWords }) => {
                                 <div
                                     key={i}
                                     className={`flex items-center justify-center w-7 h-7 rounded border border-white/10 text-[10px] font-bold transition-all duration-75 ${isActive && currentWordIdx < typedWords.length
-                                            ? typedWords[currentWordIdx].charStates?.[currentCharIdx] === 'correct'
-                                                ? 'bg-green-500 text-white scale-95 shadow-[0_0_12px_rgb(34,197,94)]'
-                                                : typedWords[currentWordIdx].charStates?.[currentCharIdx] === 'incorrect'
-                                                    ? 'bg-red-500 text-white scale-95 shadow-[0_0_12px_rgb(239,68,68)]'
-                                                    : 'bg-[var(--color-caret)] text-[var(--color-bg-primary)] scale-95 shadow-[0_0_12px_var(--color-caret)]'
-                                            : 'bg-white/5 text-white/40'
+                                        ? typedWords[currentWordIdx].charStates?.[currentCharIdx] === 'correct'
+                                            ? 'bg-green-500 text-white scale-95 shadow-[0_0_12px_rgb(34,197,94)]'
+                                            : typedWords[currentWordIdx].charStates?.[currentCharIdx] === 'incorrect'
+                                                ? 'bg-red-500 text-white scale-95 shadow-[0_0_12px_rgb(239,68,68)]'
+                                                : 'bg-[var(--color-caret)] text-[var(--color-bg-primary)] scale-95 shadow-[0_0_12px_var(--color-caret)]'
+                                        : 'bg-white/5 text-white/40'
                                         }`}
                                 >
                                     {displayKey}
@@ -222,6 +225,12 @@ export const AnimatedReplay = ({ typedWords }) => {
                     className="px-3 py-1 text-xs rounded bg-white/5 hover:bg-white/10 text-text-secondary hover:text-text-primary transition-colors"
                 >
                     ↺ Reset
+                </button>
+                <button
+                    onClick={() => setIsMuted(m => !m)}
+                    className="px-3 py-1 text-xs rounded bg-white/5 hover:bg-white/10 text-text-secondary hover:text-text-primary transition-colors min-w-[80px]"
+                >
+                    {isMuted ? '🔇 Unmute' : '🔊 Mute'}
                 </button>
             </div>
         </div>

@@ -280,6 +280,9 @@ export const useTypingEngine = (status, startTest, endTest, resetTest, mode, con
                 stats.current.incorrect++;
                 charStat.errors++;
                 charStates.current[wordIdx][cursor.current.charIndex] = 'incorrect';
+
+                // Dispatch typing error sound event
+                window.dispatchEvent(new CustomEvent('typing-error'));
             }
             cursor.current.charIndex++;
         } else if (key === ' ') {
@@ -287,7 +290,12 @@ export const useTypingEngine = (status, startTest, endTest, resetTest, mode, con
             cursor.current.wordIndex++;
             cursor.current.charIndex = 0;
 
+            // Dispatch word complete sound event
+            window.dispatchEvent(new CustomEvent('word-complete'));
+
             if (mode === 'words' && cursor.current.wordIndex >= config) {
+                // Dispatch test complete sound before ending
+                window.dispatchEvent(new CustomEvent('test-complete'));
                 endTest();
                 return;
             }
@@ -298,6 +306,9 @@ export const useTypingEngine = (status, startTest, endTest, resetTest, mode, con
                 cursor.current.charIndex++;
                 stats.current.extra++;
                 stats.current.incorrect++;
+
+                // Extra chars are also errors
+                window.dispatchEvent(new CustomEvent('typing-error'));
             }
         }
 
@@ -309,6 +320,9 @@ export const useTypingEngine = (status, startTest, endTest, resetTest, mode, con
             }
         }));
         window.dispatchEvent(new CustomEvent('cursor-move', { detail: cursor.current }));
+
+        // Dispatch typing sound event (picked up by useTypingSound hook)
+        window.dispatchEvent(new CustomEvent('typing-sound'));
     }, [words, mode, config, confidenceMode, endTest, addExtraChar]);
 
 

@@ -6,7 +6,7 @@ import { AnimatedReplay } from './AnimatedReplay';
  * Results.jsx - Fixed Layout
  * Hierarchy: Net WPM → Raw WPM → Secondary Stats → Graph → Analysis
  */
-export const Results = ({ stats, duration, restart, sessionKeys, wpmHistory = [], typedWords = [] }) => {
+export const Results = ({ stats, duration, restart, sessionKeys, wpmHistory = [], typedWords = [], playSound }) => {
     const [calculations, setCalculations] = useState({ wpm: 0, acc: 0, raw: 0, consistency: 0, correct: 0, incorrect: 0 });
 
     useEffect(() => {
@@ -153,7 +153,7 @@ export const Results = ({ stats, duration, restart, sessionKeys, wpmHistory = []
             ═══════════════════════════════════════════════════════════ */}
             <div className="w-full flex flex-col items-center gap-4">
                 {typedWords.length > 0 && (
-                    <AnimatedReplay typedWords={typedWords} />
+                    <AnimatedReplay typedWords={typedWords} playSound={playSound} />
                 )}
             </div>
 

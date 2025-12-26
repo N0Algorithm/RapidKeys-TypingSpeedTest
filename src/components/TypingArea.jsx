@@ -1,11 +1,13 @@
 import { useRef, useEffect, useState } from 'react';
 import { useSystem } from '../hooks/useSystem';
 import { useTypingEngine } from '../hooks/useTypingEngine';
+import { useTypingSound } from '../hooks/useTypingSound';
 import { Caret } from './Caret';
 import { Word } from './Word';
 import { StatsBar } from './StatsBar';
 import { Results } from './Results';
 import SettingsBar from './SettingsBar';
+import SoundSettings from './SoundSettings';
 
 export default function TypingArea() {
     const {
@@ -24,8 +26,59 @@ export default function TypingArea() {
         setIncludeNumbers,
         confidenceMode,
         setConfidenceMode,
+        // Sound settings
+        soundStyle,
+        setSoundStyle,
+        soundOutput,
+        setSoundOutput,
+        masterVolume,
+        setMasterVolume,
+        keyVolume,
+        setKeyVolume,
+        enableRelease,
+        setEnableRelease,
+        enableError,
+        setEnableError,
+        enableWordComplete,
+        setEnableWordComplete,
+        enableTestComplete,
+        setEnableTestComplete,
+        enableVariation,
+        setEnableVariation,
+        variationIntensity,
+        setVariationIntensity,
         wpmHistory
     } = useSystem();
+
+    // Sound settings modal state
+    const [showSoundSettings, setShowSoundSettings] = useState(false);
+
+    // Build sound settings object for the hook
+    const soundSettings = {
+        soundStyle,
+        soundOutput,
+        masterVolume,
+        keyVolume,
+        enableRelease,
+        enableError,
+        enableWordComplete,
+        enableTestComplete,
+        enableVariation,
+        variationIntensity
+    };
+
+    // Typing sound hook - uses refs to avoid re-renders
+    const {
+        initAudio,
+        playKeyPress,
+        previewSound,
+        playKeyRelease,
+        playError,
+        playWordComplete,
+        playTestComplete,
+        playTestSound,
+        updateDeviceTuning
+    } = useTypingSound(soundSettings);
 
     const {
         words,
@@ -58,6 +111,59 @@ export default function TypingArea() {
             inputRef.current?.focus();
         }
     }, [status]);
+
+    // Initialize audio on first user interaction (browser autoplay policy)
+    useEffect(() => {
+        const handleFirstInteraction = () => {
+            initAudio();
+            window.removeEventListener('click', handleFirstInteraction);
+            window.removeEventListener('keydown', handleFirstInteraction);
+        };
+        window.addEventListener('click', handleFirstInteraction);
+        window.addEventListener('keydown', handleFirstInteraction);
+        return () => {
+            window.removeEventListener('click', handleFirstInteraction);
+            window.removeEventListener('keydown', handleFirstInteraction);
+        };
+    }, [initAudio]);
+
+    // Play typing sound on key press
+    useEffect(() => {
+        const handleKeyPress = () => playKeyPress();
+        window.addEventListener('typing-sound', handleKeyPress);
+        return () => window.removeEventListener('typing-sound', handleKeyPress);
+    }, [playKeyPress]);
+
+    // Play key release sound
+    useEffect(() => {
+        const handleKeyRelease = () => playKeyRelease();
+        window.addEventListener('key-release', handleKeyRelease);
+        return () => window.removeEventListener('key-release', handleKeyRelease);
+    }, [playKeyRelease]);
+
+    // Play error sound on typing error
+    useEffect(() => {
+        window.addEventListener('typing-error', playError);
+        return () => window.removeEventListener('typing-error', playError);
+    }, [playError]);
+
+    // Play word complete sound
+    useEffect(() => {
+        window.addEventListener('word-complete', playWordComplete);
+        return () => window.removeEventListener('word-complete', playWordComplete);
+    }, [playWordComplete]);
+
+    // Play test complete sound
+    useEffect(() => {
+        const handleTestComplete = () => playTestComplete();
+        window.addEventListener('test-complete', handleTestComplete);
+        return () => window.removeEventListener('test-complete', handleTestComplete);
+    }, [playTestComplete]);
+
+    // Update sound buffers when output device changes
+    useEffect(() => {
+        updateDeviceTuning();
+    }, [soundOutput, updateDeviceTuning]);
 
     // Update Config implies restart
     useEffect(() => {
@@ -104,6 +210,7 @@ export default function TypingArea() {
                 sessionKeys={sessionKeys}
                 wpmHistory={wpmHistory}
                 typedWords={typedWords}
+                playSound={playKeyPress}
             />
         );
     }
@@ -150,6 +257,8 @@ export default function TypingArea() {
                 setIncludeNumbers={setIncludeNumbers}
                 confidenceMode={confidenceMode}
                 setConfidenceMode={setConfidenceMode}
+                soundStyle={soundStyle}
+                onSoundSettingsClick={() => setShowSoundSettings(true)}
                 status={status}
             />
 
@@ -218,6 +327,32 @@ export default function TypingArea() {
                     Tab + Enter → Restart Test • Esc → Instant Restart
                 </div>
             </div>
+
+            {/* Sound Settings Modal */}
+            {showSoundSettings && (
+                <SoundSettings
+                    soundStyle={soundStyle}
+                    setSoundStyle={setSoundStyle}
+                    masterVolume={masterVolume}
+                    setMasterVolume={setMasterVolume}
+                    keyVolume={keyVolume}
+                    setKeyVolume={setKeyVolume}
+                    enableRelease={enableRelease}
+                    setEnableRelease={setEnableRelease}
+                    enableError={enableError}
+                    setEnableError={setEnableError}
+                    enableWordComplete={enableWordComplete}
+                    setEnableWordComplete={setEnableWordComplete}
+                    enableTestComplete={enableTestComplete}
+                    setEnableTestComplete={setEnableTestComplete}
+                    enableVariation={enableVariation}
+                    setEnableVariation={setEnableVariation}
+                    variationIntensity={variationIntensity}
+                    setVariationIntensity={setVariationIntensity}
+                    onPreviewSound={previewSound}
+                    onClose={() => setShowSoundSettings(false)}
+                />
+            )}
         </div>
     );
 }
