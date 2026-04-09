@@ -4,15 +4,15 @@ import { useTypingEngine } from '../useTypingEngine';
 // Mock dependencies
 jest.mock('../../utils/words', () => ({
     generateWords: jest.fn(() => [
-        { word: 'test', chars: ['t', 'e', 's', 't'] },
-        { word: 'word', chars: ['w', 'o', 'r', 'd'] }
+        { id: 'word-0', string: 'test', chars: ['t', 'e', 's', 't'] },
+        { id: 'word-1', string: 'word', chars: ['w', 'o', 'r', 'd'] }
     ])
 }));
 
 jest.mock('../../utils/quotes', () => ({
     generateQuote: jest.fn(() => [
-        { word: 'some', chars: ['s', 'o', 'm', 'e'] },
-        { word: 'quote', chars: ['q', 'u', 'o', 't', 'e'] }
+        { id: 'quote-0', string: 'some', chars: ['s', 'o', 'm', 'e'] },
+        { id: 'quote-1', string: 'quote', chars: ['q', 'u', 'o', 't', 'e'] }
     ])
 }));
 
@@ -32,18 +32,27 @@ describe('useTypingEngine', () => {
         ));
         
         expect(result.current.words.length).toBeGreaterThan(0);
-        expect(result.current.words[0].word).toBe('test');
+        expect(result.current.words[0].string).toBe('test');
     });
 
-    it('updates cursor on valid key press logic', () => {
+    it('advances the cursor when handleInput receives a valid character', () => {
         const { result } = renderHook(() => useTypingEngine(
             'running', mockStartTest, mockEndTest, mockResetTest,
             'time', 30, false, false, false
         ));
 
-        // The core method is processChar or exposed by handleInput/getTypedWords. 
-        // We simulate a keydown indirectly assuming a DOM interaction or we expect engine props.
         expect(result.current.cursor).toEqual({ wordIndex: 0, charIndex: 0 });
+
+        act(() => {
+            result.current.handleInput({
+                nativeEvent: {
+                    inputType: 'insertText',
+                    data: 't'
+                }
+            });
+        });
+
+        expect(result.current.cursor).toEqual({ wordIndex: 0, charIndex: 1 });
     });
 
     it('resets correctly when requested', () => {
@@ -51,7 +60,19 @@ describe('useTypingEngine', () => {
             'running', mockStartTest, mockEndTest, mockResetTest,
             'time', 30, false, false, false
         ));
-        
+
+        act(() => {
+            result.current.handleInput({
+                nativeEvent: {
+                    inputType: 'insertText',
+                    data: 't'
+                }
+            });
+        });
+
+        expect(result.current.cursor).toEqual({ wordIndex: 0, charIndex: 1 });
+        expect(result.current.stats).toEqual({ correct: 1, incorrect: 0, extra: 0, totalKeystrokes: 1 });
+
         act(() => {
             result.current.resetEngine();
         });
