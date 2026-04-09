@@ -47,19 +47,6 @@ const SOUND_FILES = {
     thud: {
         press: ['/sounds/thud/Glorious.ogg']
     },
-    clacky: {
-        press: [
-            '/sounds/clacky/01.wav',
-            '/sounds/clacky/02.wav',
-            '/sounds/clacky/03.wav',
-            '/sounds/clacky/04.wav',
-            '/sounds/clacky/05.wav',
-            '/sounds/clacky/06.wav',
-            '/sounds/clacky/charenter_01.wav',
-            '/sounds/clacky/charenter_02.wav',
-            '/sounds/clacky/charenter_03.wav'
-        ]
-    },
     thock: {
         press: ['/sounds/thock/Creams.ogg']
     }

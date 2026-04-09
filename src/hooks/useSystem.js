@@ -18,7 +18,7 @@ export const useSystem = () => {
     const [confidenceMode, setConfidenceMode] = useState(false); // Confidence Mode State
 
     // Sound Settings
-    const [soundStyle, setSoundStyle] = useState('tick'); // 'tick' | 'smooth' | 'thud' | 'clacky' | 'thock' | 'beep' | 'off'
+    const [soundStyle, setSoundStyle] = useState('tick'); // 'tick' | 'smooth' | 'thud' | 'thock' | 'beep' | 'off'
     const [masterVolume, setMasterVolume] = useState(0.5);
     const [keyVolume, setKeyVolume] = useState(0.8);
     const [enableRelease, setEnableRelease] = useState(false);
@@ -51,7 +51,7 @@ export const useSystem = () => {
             const saved = localStorage.getItem('rapidkeys_sound_settings');
             if (saved) {
                 const settings = JSON.parse(saved);
-                if (settings.soundStyle && ['tick', 'smooth', 'thud', 'clacky', 'thock', 'beep', 'off'].includes(settings.soundStyle)) {
+                if (settings.soundStyle && ['tick', 'smooth', 'thud', 'thock', 'beep', 'off'].includes(settings.soundStyle)) {
                     setSoundStyle(settings.soundStyle);
                 }
                 if (typeof settings.masterVolume === 'number') setMasterVolume(settings.masterVolume);
