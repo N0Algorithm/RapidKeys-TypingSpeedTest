@@ -2,6 +2,21 @@ import { useRef, useEffect, useCallback, useState } from 'react';
 import { generateWords } from '../utils/words';
 import { generateQuote } from '../utils/quotes';
 
+/**
+ * Custom hook to handle the core typing engine logic.
+ * Manages word generation, keystroke tracking, performance stats, and DOM refs for the typing interface.
+ * 
+ * @param {string} status - Current status of the typing test ('idle', 'running', 'paused', 'finished').
+ * @param {Function} startTest - Callback to start the test.
+ * @param {Function} endTest - Callback to end the test.
+ * @param {Function} resetTest - Callback to reset the test state.
+ * @param {string} mode - Typing mode ('time', 'words', 'quote').
+ * @param {number|string} config - Mode configuration (e.g., seconds for 'time', word count for 'words', length for 'quote').
+ * @param {boolean} includePunctuation - Whether to include punctuation in generated text.
+ * @param {boolean} includeNumbers - Whether to include numbers in generated text.
+ * @param {boolean} confidenceMode - If true, incorrect keystrokes are not highlighted.
+ * @returns {Object} Typing engine state and helper functions.
+ */
 export const useTypingEngine = (status, startTest, endTest, resetTest, mode, config, includePunctuation, includeNumbers, confidenceMode) => {
     // Config-dependent word generation - initialize with empty array to avoid hydration mismatch
     const [words, setWords] = useState([]);

@@ -142,7 +142,7 @@ const SoundSettings = memo(({
                     {/* Sound Style */}
                     <SectionHeader>Sound Style</SectionHeader>
                     <div className="flex flex-wrap gap-2 mb-6">
-                        {['tick', 'smooth', 'thud', 'clacky', 'thock', 'beep', 'off'].map((style) => (
+                        {['tick', 'smooth', 'thud', 'thock', 'beep', 'off'].map((style) => (
                             <button
                                 key={style}
                                 onClick={() => {
