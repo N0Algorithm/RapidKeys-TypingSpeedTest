@@ -123,7 +123,7 @@ const SettingsBar = memo(({
     // --- DESKTOP BAR (Inline) ---
     const DesktopBar = () => (
         <div
-            className="hidden md:flex items-center justify-center gap-2 lg:gap-6 mb-8 p-2 rounded-lg bg-black/20 backdrop-blur-sm border border-white/5 animate-in fade-in slide-in-from-top-4 duration-500"
+            className="hidden md:flex items-center justify-center gap-2 lg:gap-4 xl:gap-6 mb-6 sm:mb-8 p-2 lg:p-3 rounded-lg bg-black/20 backdrop-blur-sm border border-white/5 animate-in fade-in slide-in-from-top-4 duration-500"
             role="toolbar"
             aria-label="Test Settings"
         >
@@ -181,10 +181,10 @@ const SettingsBar = memo(({
 
     // --- MOBILE TRIGGER (Visible on small screens) ---
     const MobileTrigger = () => (
-        <div className="md:hidden flex justify-center mb-8">
+        <div className="md:hidden flex justify-center mb-6 sm:mb-8">
             <button
                 onClick={() => setMobileMenuOpen(true)}
-                className="flex items-center gap-2 px-4 py-2 rounded-full bg-black/20 backdrop-blur-sm border border-white/5 text-text-secondary hover:text-text-primary transition-colors"
+                className="flex items-center gap-2 px-4 py-2.5 rounded-full bg-black/20 backdrop-blur-sm border border-white/5 text-text-secondary hover:text-text-primary transition-colors touch-target"
                 aria-label="Open Settings"
             >
                 <span className="text-lg">⚙</span>

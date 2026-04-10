@@ -26,7 +26,7 @@ export const Word = memo(({ word, wordIdx, registerRef, registerExtrasContainer 
     }, [wordIdx, registerExtrasContainer]);
 
     return (
-        <div className="flex mr-3 mb-2 text-2xl font-mono leading-relaxed break-all">
+        <div className="flex mr-2.5 sm:mr-3 lg:mr-3.5 mb-1.5 sm:mb-2 word-fluid font-mono break-all">
             {word.chars.map((char, charIdx) => (
                 <Letter
                     key={`${wordIdx}-${charIdx}`}

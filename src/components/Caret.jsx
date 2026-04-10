@@ -94,7 +94,7 @@ export const Caret = ({ charRefs }) => {
     return (
         <div
             ref={caretRef}
-            className="absolute top-0 left-0 w-0.5 h-8 bg-[var(--color-caret)] rounded-full transition-transform duration-100 ease-out z-10 animate-blink will-change-transform caret-glow"
+            className="absolute top-0 left-0 w-0.5 caret-responsive bg-[var(--color-caret)] rounded-full transition-transform duration-100 ease-out z-10 animate-blink will-change-transform caret-glow"
             style={{
                 transform: `translate(${initPos.x}px, ${initPos.y}px)`,
                 // Visual adjustment to center vertically if needed, or match height

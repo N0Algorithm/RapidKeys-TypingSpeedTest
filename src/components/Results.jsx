@@ -81,41 +81,41 @@ export const Results = ({ stats, duration, restart, sessionKeys, wpmHistory = []
     }, [chartPath]);
 
     return (
-        <div className="flex flex-col items-center justify-start w-full max-w-2xl mx-auto py-6 px-4">
+        <div className="flex flex-col items-center justify-start w-full max-w-3xl lg:max-w-4xl mx-auto py-5 sm:py-6 lg:py-8 px-3 sm:px-4 lg:px-6">
 
             {/* ═══════════════════════════════════════════════════════════
                 HERO: Net WPM (dominant) + Raw WPM (secondary)
                 Compressed vertical spacing, clear hierarchy
             ═══════════════════════════════════════════════════════════ */}
-            <div className="flex flex-col items-center mb-4">
+            <div className="flex flex-col items-center mb-4 text-center">
                 {/* NET WPM - Hero metric */}
                 <span className="text-[10px] uppercase tracking-[0.2em] text-text-secondary opacity-50">net wpm</span>
-                <span className="text-6xl font-bold text-[var(--color-caret)] leading-none">
+                <span className="text-5xl sm:text-6xl lg:text-7xl xl:text-8xl font-bold text-[var(--color-caret)] leading-none">
                     {calculations.wpm}
                 </span>
 
                 {/* RAW WPM - Secondary, smaller, muted */}
                 <div className="flex items-baseline gap-2 mt-1">
                     <span className="text-[10px] uppercase tracking-widest text-text-secondary opacity-40">raw</span>
-                    <span className="text-2xl font-semibold text-text-primary opacity-70">{calculations.raw}</span>
+                    <span className="text-xl sm:text-2xl lg:text-3xl font-semibold text-text-primary opacity-70">{calculations.raw}</span>
                 </div>
             </div>
 
             {/* ═══════════════════════════════════════════════════════════
                 SECONDARY STATS: Compact horizontal row
             ═══════════════════════════════════════════════════════════ */}
-            <div className="flex gap-6 mb-4">
+            <div className="grid grid-cols-3 gap-4 sm:gap-6 lg:gap-8 mb-4 w-full max-w-lg lg:max-w-xl">
                 <div className="text-center">
                     <div className="text-[9px] uppercase tracking-widest text-text-secondary opacity-40">acc</div>
-                    <div className="text-lg text-text-primary font-medium">{calculations.acc}%</div>
+                    <div className="text-base sm:text-lg lg:text-xl font-medium text-text-primary">{calculations.acc}%</div>
                 </div>
                 <div className="text-center">
                     <div className="text-[9px] uppercase tracking-widest text-text-secondary opacity-40">consistency</div>
-                    <div className="text-lg text-text-primary font-medium">{calculations.consistency}%</div>
+                    <div className="text-base sm:text-lg lg:text-xl font-medium text-text-primary">{calculations.consistency}%</div>
                 </div>
                 <div className="text-center">
                     <div className="text-[9px] uppercase tracking-widest text-text-secondary opacity-40">chars</div>
-                    <div className="text-lg text-text-primary font-medium">
+                    <div className="text-base sm:text-lg lg:text-xl font-medium text-text-primary">
                         {calculations.correct}<span className="text-text-secondary opacity-40">/</span><span className="text-red-500">{calculations.incorrect}</span>
                     </div>
                 </div>
@@ -125,7 +125,7 @@ export const Results = ({ stats, duration, restart, sessionKeys, wpmHistory = []
                 GRAPH: Demoted, compact, supporting context only
             ═══════════════════════════════════════════════════════════ */}
             {wpmHistory.length > 1 && (
-                <div className="w-full max-w-md mb-5 opacity-70">
+                <div className="w-full max-w-md lg:max-w-lg mb-5 opacity-70 px-1">
                     <svg viewBox={`0 0 ${CHART_WIDTH} ${CHART_HEIGHT}`} className="w-full h-auto">
                         {/* Minimal grid - just baseline */}
                         <line x1={PADDING} y1={CHART_HEIGHT - PADDING} x2={CHART_WIDTH - PADDING} y2={CHART_HEIGHT - PADDING} stroke="#333" strokeOpacity="0.4" />
@@ -162,7 +162,7 @@ export const Results = ({ stats, duration, restart, sessionKeys, wpmHistory = []
             ═══════════════════════════════════════════════════════════ */}
             <button
                 onClick={restart}
-                className="mt-8 mb-8 px-6 py-2.5 rounded bg-[var(--color-caret)] text-[var(--color-bg-primary)] text-sm font-bold hover:brightness-110 transition-all"
+                className="mt-6 sm:mt-8 mb-8 px-6 sm:px-8 py-2.5 sm:py-3 rounded bg-[var(--color-caret)] text-[var(--color-bg-primary)] text-sm sm:text-base font-bold hover:brightness-110 transition-all touch-target"
             >
                 Restart
             </button>
