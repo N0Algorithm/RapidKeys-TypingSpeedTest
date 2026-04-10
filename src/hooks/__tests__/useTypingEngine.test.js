@@ -20,26 +20,38 @@ describe('useTypingEngine', () => {
     const mockStartTest = jest.fn();
     const mockEndTest = jest.fn();
     const mockResetTest = jest.fn();
+    const renderTypingEngine = ({
+        status = 'idle',
+        mode = 'time',
+        config = 30,
+        includePunctuation = false,
+        includeNumbers = false,
+        confidenceMode = false
+    } = {}) => renderHook(() => useTypingEngine(
+        status,
+        mockStartTest,
+        mockEndTest,
+        mockResetTest,
+        mode,
+        config,
+        includePunctuation,
+        includeNumbers,
+        confidenceMode
+    ));
 
     beforeEach(() => {
         jest.clearAllMocks();
     });
 
     it('initializes with correctly generated words', () => {
-        const { result } = renderHook(() => useTypingEngine(
-            'idle', mockStartTest, mockEndTest, mockResetTest,
-            'time', 30, false, false, false
-        ));
+        const { result } = renderTypingEngine();
         
         expect(result.current.words.length).toBeGreaterThan(0);
         expect(result.current.words[0].string).toBe('test');
     });
 
     it('advances the cursor when handleInput receives a valid character', () => {
-        const { result } = renderHook(() => useTypingEngine(
-            'running', mockStartTest, mockEndTest, mockResetTest,
-            'time', 30, false, false, false
-        ));
+        const { result } = renderTypingEngine({ status: 'running' });
 
         expect(result.current.cursor).toEqual({ wordIndex: 0, charIndex: 0 });
 
@@ -56,10 +68,7 @@ describe('useTypingEngine', () => {
     });
 
     it('resets correctly when requested', () => {
-        const { result } = renderHook(() => useTypingEngine(
-            'running', mockStartTest, mockEndTest, mockResetTest,
-            'time', 30, false, false, false
-        ));
+        const { result } = renderTypingEngine({ status: 'running' });
 
         act(() => {
             result.current.handleInput({
