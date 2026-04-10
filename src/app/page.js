@@ -20,7 +20,7 @@ export default function Home() {
   }, []); // Run once on mount
 
   return (
-    <main className="relative flex min-h-screen flex-col items-center justify-center p-4 sm:p-8 overflow-hidden">
+    <main className="relative flex min-h-screen flex-col items-center justify-center overflow-hidden px-3 py-6 sm:px-6 sm:py-8 lg:px-10">
 
       {/* Logo / Header Area */}
       <div
@@ -60,4 +60,3 @@ export default function Home() {
     </main>
   );
 }
-

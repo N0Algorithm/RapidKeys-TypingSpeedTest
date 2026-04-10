@@ -117,11 +117,11 @@ export const AnimatedReplay = ({ typedWords, playSound }) => {
     };
 
     return (
-        <div className="w-full max-w-2xl flex flex-col items-center gap-4">
+        <div className="w-full max-w-2xl flex flex-col items-center gap-4 px-1 sm:px-0">
 
             {/* Typing Test Style Display */}
             <div className="w-full text-center">
-                <div className="flex flex-wrap justify-center gap-x-3 gap-y-1 text-2xl font-mono leading-relaxed">
+                <div className="flex flex-wrap justify-center gap-x-2 sm:gap-x-3 gap-y-1 text-[clamp(1.1rem,4.2vw,1.5rem)] font-mono leading-relaxed">
                     {typedWords.map((word, wordIdx) => {
                         const isCurrentWord = wordIdx === currentWordIdx;
                         const isPastWord = wordIdx < currentWordIdx;
@@ -164,7 +164,8 @@ export const AnimatedReplay = ({ typedWords, playSound }) => {
             </div>
 
             {/* Full Keyboard Layout */}
-            <div className="flex flex-col gap-1 items-center select-none mt-2 scale-75 sm:scale-90 md:scale-100">
+            <div className="w-full overflow-x-auto">
+                <div className="mx-auto flex min-w-[540px] flex-col gap-1 items-center select-none mt-2 scale-[0.7] sm:scale-90 md:scale-100 origin-top">
                 {KEYBOARD_LAYOUT.map((row, rowIdx) => (
                     <div key={rowIdx} className="flex gap-1">
                         {/* Left special keys */}
@@ -210,10 +211,11 @@ export const AnimatedReplay = ({ typedWords, playSound }) => {
                         )}
                     </div>
                 ))}
+                </div>
             </div>
 
             {/* Controls */}
-            <div className="flex gap-2">
+            <div className="flex flex-wrap justify-center gap-2">
                 <button
                     onClick={isPlaying ? pause : play}
                     className="px-3 py-1 text-xs rounded bg-white/5 hover:bg-white/10 text-text-secondary hover:text-text-primary transition-colors"
