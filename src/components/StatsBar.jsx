@@ -27,38 +27,38 @@ export const StatsBar = ({ status, timeLeft, duration, statsRef }) => {
     }, [status, timeLeft, duration, statsRef]);
 
     return (
-        <div className="flex w-full flex-col gap-3 sm:flex-row sm:items-end sm:justify-between px-3 sm:px-4 pb-4 border-b border-white/5 mb-6 sm:mb-8">
+        <div className="flex w-full flex-col gap-3 sm:flex-row sm:items-end sm:justify-between px-3 sm:px-4 lg:px-6 xl:px-8 pb-4 border-b border-white/5 mb-5 sm:mb-6 lg:mb-8">
 
             {/* Metrics Group */}
-            <div className="flex gap-3 sm:gap-8 md:gap-12 text-base sm:text-xl items-end justify-between sm:justify-start w-full sm:w-auto">
+            <div className="flex gap-3 sm:gap-6 md:gap-8 lg:gap-12 xl:gap-14 text-base sm:text-xl items-end justify-between sm:justify-start w-full sm:w-auto">
 
                 {/* Timer */}
-                <div className="flex flex-col gap-1 w-16 sm:w-20 md:w-24">
-                    <span className="text-[9px] sm:text-[10px] font-bold tracking-widest text-text-secondary uppercase opacity-60">Time</span>
-                    <div className="text-xl sm:text-3xl font-bold text-[var(--color-caret)] tabular-nums">
+                <div className="flex flex-col gap-1 w-16 sm:w-20 md:w-24 lg:w-28">
+                    <span className="text-[9px] sm:text-[10px] lg:text-xs font-bold tracking-widest text-text-secondary uppercase opacity-60">Time</span>
+                    <div className="text-xl sm:text-3xl lg:text-4xl xl:text-5xl font-bold text-[var(--color-caret)] tabular-nums">
                         {timeLeft}<span className="text-xs sm:text-sm text-text-secondary ml-0.5 sm:ml-1">s</span>
                     </div>
                 </div>
 
                 {/* Live WPM */}
-                <div className="flex flex-col gap-1 w-20 sm:w-28 md:w-32">
-                    <span className="text-[9px] sm:text-[10px] font-bold tracking-widest text-text-secondary uppercase opacity-60">WPM</span>
-                    <div className="text-xl sm:text-3xl md:text-4xl font-bold text-text-primary tabular-nums drop-shadow-md">
+                <div className="flex flex-col gap-1 w-20 sm:w-24 md:w-28 lg:w-32 xl:w-36">
+                    <span className="text-[9px] sm:text-[10px] lg:text-xs font-bold tracking-widest text-text-secondary uppercase opacity-60">WPM</span>
+                    <div className="text-xl sm:text-3xl md:text-4xl lg:text-4xl xl:text-5xl font-bold text-text-primary tabular-nums drop-shadow-md">
                         {liveWpm}
                     </div>
                 </div>
 
                 {/* Accuracy */}
-                <div className="flex flex-col gap-1 w-20 sm:w-28 md:w-32">
-                    <span className="text-[9px] sm:text-[10px] font-bold tracking-widest text-text-secondary uppercase opacity-60">Accuracy</span>
-                    <div className="text-xl sm:text-3xl md:text-4xl font-bold text-text-primary tabular-nums">
+                <div className="flex flex-col gap-1 w-20 sm:w-24 md:w-28 lg:w-32 xl:w-36">
+                    <span className="text-[9px] sm:text-[10px] lg:text-xs font-bold tracking-widest text-text-secondary uppercase opacity-60">Accuracy</span>
+                    <div className="text-xl sm:text-3xl md:text-4xl lg:text-4xl xl:text-5xl font-bold text-text-primary tabular-nums">
                         {liveAcc}%
                     </div>
                 </div>
             </div>
 
             {/* Status / Instructions */}
-            <div className="text-text-secondary text-[10px] sm:text-xs uppercase tracking-widest font-semibold opacity-50 pb-1 sm:pb-2 text-center sm:text-right">
+            <div className="text-text-secondary text-[10px] sm:text-xs lg:text-sm uppercase tracking-widest font-semibold opacity-50 pb-1 sm:pb-2 text-center sm:text-right">
                 {status === 'idle' ? <span className="animate-pulse">Press any key to start typing...</span> : 'Test Running'}
             </div>
         </div>

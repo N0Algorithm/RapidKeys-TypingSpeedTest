@@ -218,8 +218,8 @@ export default function TypingArea() {
     // Don't render typing area until words are loaded (prevents hydration mismatch)
     if (words.length === 0) {
         return (
-            <div className="flex flex-col items-center w-full max-w-5xl px-2 sm:px-0">
-                <div className="h-[120px] sm:h-[140px] flex items-center justify-center">
+            <div className="flex flex-col items-center w-full max-w-5xl lg:max-w-6xl 2xl:max-w-7xl px-2 sm:px-0">
+                <div className="h-[110px] sm:h-[130px] lg:h-[150px] xl:h-[160px] flex items-center justify-center">
                     <div className="text-text-secondary opacity-50">Loading...</div>
                 </div>
             </div>
@@ -228,7 +228,7 @@ export default function TypingArea() {
 
     return (
         <div
-            className="flex flex-col items-center w-full max-w-5xl outline-none px-1 sm:px-0"
+            className="flex flex-col items-center w-full max-w-5xl lg:max-w-6xl 2xl:max-w-7xl outline-none px-1 sm:px-0"
             onClick={() => inputRef.current?.focus()}
         >
             {/* Hidden Input for Mobile/Focus capture */}
@@ -272,7 +272,7 @@ export default function TypingArea() {
             <div
                 className="relative w-full overflow-hidden cursor-text py-2"
                 style={{
-                    height: 'clamp(120px, 24vw, 140px)',
+                    height: 'clamp(110px, 18vw + 30px, 180px)',
                 }}
             >
                 {/* PAUSE OVERLAY - Click to Resume */}
@@ -291,10 +291,9 @@ export default function TypingArea() {
 
                 <div
                     ref={containerRef}
-                        className={`transition-all duration-200 ease-out flex flex-wrap content-start text-[clamp(1rem,2.6vw,1.7rem)] ${status === 'paused' ? 'blur-sm opacity-50' : ''}`}
+                        className={`transition-all duration-200 ease-out flex flex-wrap content-start ${status === 'paused' ? 'blur-sm opacity-50' : ''}`}
                         style={{
                             transform: `translateY(${translateY}px)`,
-                            lineHeight: 'clamp(32px, 6.8vw, 40px)'
                         }}
                 >
                     <Caret charRefs={charRefs} />
@@ -314,7 +313,7 @@ export default function TypingArea() {
             </div>
 
             {/* Reset Button - Tab-focusable */}
-            <div className="mt-6 sm:mt-8 flex flex-col items-center gap-3 sm:gap-4 px-2 text-center">
+            <div className="mt-5 sm:mt-7 lg:mt-8 xl:mt-10 flex flex-col items-center gap-3 sm:gap-4 px-2 text-center">
                 <button
                     onClick={handleRestart}
                     className="px-6 py-2 rounded-md bg-white/5 border border-white/10 text-text-secondary text-sm font-medium hover:bg-white/10 hover:text-text-primary transition-all focus:outline-none focus:ring-2 focus:ring-[var(--color-caret)] focus:ring-offset-2 focus:ring-offset-[var(--color-bg-primary)]"

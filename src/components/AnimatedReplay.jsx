@@ -117,7 +117,7 @@ export const AnimatedReplay = ({ typedWords, playSound }) => {
     };
 
     return (
-        <div className="w-full max-w-2xl flex flex-col items-center gap-4 px-1 sm:px-0">
+        <div className="w-full max-w-2xl lg:max-w-3xl flex flex-col items-center gap-4 px-1 sm:px-0">
 
             {/* Typing Test Style Display */}
             <div className="w-full text-center">
@@ -165,7 +165,7 @@ export const AnimatedReplay = ({ typedWords, playSound }) => {
 
             {/* Full Keyboard Layout */}
             <div className="w-full overflow-x-auto">
-                <div className="mx-auto flex min-w-[540px] flex-col gap-1 items-center select-none mt-2 scale-[0.7] sm:scale-90 md:scale-100 origin-top">
+                <div className="mx-auto flex min-w-[540px] flex-col gap-1 items-center select-none mt-2 scale-[0.65] sm:scale-[0.8] md:scale-90 lg:scale-100 xl:scale-105 origin-top">
                 {KEYBOARD_LAYOUT.map((row, rowIdx) => (
                     <div key={rowIdx} className="flex gap-1">
                         {/* Left special keys */}
@@ -218,19 +218,19 @@ export const AnimatedReplay = ({ typedWords, playSound }) => {
             <div className="flex flex-wrap justify-center gap-2">
                 <button
                     onClick={isPlaying ? pause : play}
-                    className="px-3 py-1 text-xs rounded bg-white/5 hover:bg-white/10 text-text-secondary hover:text-text-primary transition-colors"
+                    className="px-3 py-1.5 text-xs sm:text-sm rounded bg-white/5 hover:bg-white/10 text-text-secondary hover:text-text-primary transition-colors touch-target"
                 >
                     {isPlaying ? '⏸ Pause' : '▶ Play'}
                 </button>
                 <button
                     onClick={reset}
-                    className="px-3 py-1 text-xs rounded bg-white/5 hover:bg-white/10 text-text-secondary hover:text-text-primary transition-colors"
+                    className="px-3 py-1.5 text-xs sm:text-sm rounded bg-white/5 hover:bg-white/10 text-text-secondary hover:text-text-primary transition-colors touch-target"
                 >
                     ↺ Reset
                 </button>
                 <button
                     onClick={() => setIsMuted(m => !m)}
-                    className="px-3 py-1 text-xs rounded bg-white/5 hover:bg-white/10 text-text-secondary hover:text-text-primary transition-colors min-w-[80px]"
+                    className="px-3 py-1.5 text-xs sm:text-sm rounded bg-white/5 hover:bg-white/10 text-text-secondary hover:text-text-primary transition-colors min-w-[80px] touch-target"
                 >
                     {isMuted ? '🔇 Unmute' : '🔊 Mute'}
                 </button>

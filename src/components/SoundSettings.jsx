@@ -119,7 +119,7 @@ const SoundSettings = memo(({
     return createPortal(
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/95 backdrop-blur-sm animate-in fade-in duration-200">
             <div
-                className="w-full max-w-md mx-4 bg-[var(--color-bg-primary)] border border-white/10 rounded-xl shadow-2xl overflow-hidden animate-in zoom-in-95 duration-200"
+                className="w-full max-w-md lg:max-w-lg xl:max-w-xl mx-4 bg-[var(--color-bg-primary)] border border-white/10 rounded-xl shadow-2xl overflow-hidden animate-in zoom-in-95 duration-200"
                 onClick={(e) => e.stopPropagation()}
             >
                 {/* Header */}
@@ -138,7 +138,7 @@ const SoundSettings = memo(({
                 </div>
 
                 {/* Content */}
-                <div className="px-5 py-4 max-h-[70vh] overflow-y-auto">
+                <div className="px-5 py-4 max-h-[70vh] lg:max-h-[75vh] xl:max-h-[80vh] overflow-y-auto">
                     {/* Sound Style */}
                     <SectionHeader>Sound Style</SectionHeader>
                     <div className="flex flex-wrap gap-2 mb-6">

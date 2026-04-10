@@ -104,3 +104,38 @@ body {
   scrollbar-width: thin;
   scrollbar-color: #2a2d35 #0F1115;
 }
+
+/* ═══════════════════════════════════════════════════
+   Responsive Utilities
+   ═══════════════════════════════════════════════════ */
+
+/* Fluid caret height across breakpoints */
+.caret-responsive {
+  height: clamp(1.6rem, 4.5vw, 2.4rem);
+}
+
+/* Touch-friendly minimum target size (WCAG 2.5.8) */
+.touch-target {
+  min-height: 44px;
+  min-width: 44px;
+}
+
+@media (min-width: 768px) {
+  .touch-target {
+    min-height: unset;
+    min-width: unset;
+  }
+}
+
+/* Responsive word sizing — fluid from mobile to ultrawide */
+.word-fluid {
+  font-size: clamp(1.15rem, 1.6vw + 0.4rem, 1.75rem);
+  line-height: clamp(1.8rem, 4vw + 0.4rem, 2.6rem);
+}
+
+/* Large-screen container bump for ultrawide monitors */
+@media (min-width: 1536px) {
+  .container-2xl {
+    max-width: 80rem;
+  }
+}
