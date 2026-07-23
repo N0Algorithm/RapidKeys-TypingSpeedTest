@@ -61,6 +61,7 @@ export const AnimatedReplay = ({ typedWords, playSound }) => {
 
         const currentWord = typedWords[currentWordIdx];
         if (!currentWord) {
+            // eslint-disable-next-line react-hooks/set-state-in-effect
             setIsPlaying(false);
             setActiveKey(null);
             return;

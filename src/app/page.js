@@ -12,6 +12,7 @@ export default function Home() {
       const history = JSON.parse(localStorage.getItem('rapidkeys_history') || '[]');
       if (history.length > 0) {
         const max = Math.max(...history.map(h => h.wpm));
+        // eslint-disable-next-line react-hooks/set-state-in-effect
         setBestWpm(max);
       }
     } catch (e) {

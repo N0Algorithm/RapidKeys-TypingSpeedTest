@@ -303,37 +303,37 @@ export const useTypingSound = (settings) => {
      * Play error sound
      */
     const playError = useCallback(() => {
-        if (!enableError) return;
+        if (!enableError || soundStyle === 'off') return;
 
         const buffer = programmaticBuffersRef.current.error;
         if (buffer) {
             playSoundBuffer(buffer, PROGRAMMATIC_SOUNDS.error.volume);
         }
-    }, [enableError, playSoundBuffer]);
+    }, [enableError, soundStyle, playSoundBuffer]);
 
     /**
      * Play word complete sound
      */
     const playWordComplete = useCallback(() => {
-        if (!enableWordComplete) return;
+        if (!enableWordComplete || soundStyle === 'off') return;
 
         const buffer = programmaticBuffersRef.current.wordComplete;
         if (buffer) {
             playSoundBuffer(buffer, PROGRAMMATIC_SOUNDS.wordComplete.volume);
         }
-    }, [enableWordComplete, playSoundBuffer]);
+    }, [enableWordComplete, soundStyle, playSoundBuffer]);
 
     /**
      * Play test complete sound
      */
     const playTestComplete = useCallback(() => {
-        if (!enableTestComplete) return;
+        if (!enableTestComplete || soundStyle === 'off') return;
 
         const buffer = programmaticBuffersRef.current.testComplete;
         if (buffer) {
             playSoundBuffer(buffer, PROGRAMMATIC_SOUNDS.testComplete.volume);
         }
-    }, [enableTestComplete, playSoundBuffer]);
+    }, [enableTestComplete, soundStyle, playSoundBuffer]);
 
     /**
      * Play test sound (for settings preview)

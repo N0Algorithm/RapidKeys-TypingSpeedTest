@@ -24,8 +24,6 @@ export default function TypingArea() {
         setIncludePunctuation,
         includeNumbers,
         setIncludeNumbers,
-        confidenceMode,
-        setConfidenceMode,
         // Sound settings
         soundStyle,
         setSoundStyle,
@@ -47,7 +45,7 @@ export default function TypingArea() {
         setEnableVariation,
         variationIntensity,
         setVariationIntensity,
-        wpmHistory
+        getWpmHistory
     } = useSystem();
 
     // Sound settings modal state
@@ -90,7 +88,7 @@ export default function TypingArea() {
         sessionKeys,
         getTypedWords,
         handleInput // Destructure handleInput
-    } = useTypingEngine(status, startTest, endTest, resetTest, mode, config, includePunctuation, includeNumbers, confidenceMode);
+    } = useTypingEngine(status, startTest, endTest, resetTest, mode, config, includePunctuation, includeNumbers);
 
     const [translateY, setTranslateY] = useState(0);
     const containerRef = useRef(null);
@@ -201,16 +199,15 @@ export default function TypingArea() {
 
     if (status === 'finished') {
         const finalDuration = mode === 'time' ? config : timer;
-        const typedWords = getTypedWords();
         return (
             <Results
                 stats={stats}
                 duration={finalDuration}
                 restart={handleRestart}
+                wpmHistory={getWpmHistory()}
                 sessionKeys={sessionKeys}
-                wpmHistory={wpmHistory}
-                typedWords={typedWords}
-                playSound={playKeyPress}
+                typedWords={getTypedWords()}
+                playSound={playTestSound}
             />
         );
     }
@@ -255,8 +252,6 @@ export default function TypingArea() {
                 setIncludePunctuation={setIncludePunctuation}
                 includeNumbers={includeNumbers}
                 setIncludeNumbers={setIncludeNumbers}
-                confidenceMode={confidenceMode}
-                setConfidenceMode={setConfidenceMode}
                 soundStyle={soundStyle}
                 onSoundSettingsClick={() => setShowSoundSettings(true)}
                 status={status}

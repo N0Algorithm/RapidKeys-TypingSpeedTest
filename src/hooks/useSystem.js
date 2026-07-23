@@ -15,7 +15,6 @@ export const useSystem = () => {
     const [config, setConfig] = useState(30); // 30s or 30 words
     const [includePunctuation, setIncludePunctuation] = useState(false);
     const [includeNumbers, setIncludeNumbers] = useState(false);
-    const [confidenceMode, setConfidenceMode] = useState(false); // Confidence Mode State
 
     // Sound Settings
     const [soundStyle, setSoundStyle] = useState('tick'); // 'tick' | 'smooth' | 'thud' | 'clacky' | 'thock' | 'beep' | 'off'
@@ -40,6 +39,7 @@ export const useSystem = () => {
     // Initialize display timer when config changes
     useEffect(() => {
         if (status === 'idle') {
+            // eslint-disable-next-line react-hooks/set-state-in-effect
             setTimer(mode === 'time' ? config : 0);
             historyRef.current = [];
         }
@@ -52,16 +52,41 @@ export const useSystem = () => {
             if (saved) {
                 const settings = JSON.parse(saved);
                 if (settings.soundStyle && ['tick', 'smooth', 'thud', 'clacky', 'thock', 'beep', 'off'].includes(settings.soundStyle)) {
+                    // eslint-disable-next-line react-hooks/set-state-in-effect
                     setSoundStyle(settings.soundStyle);
                 }
-                if (typeof settings.masterVolume === 'number') setMasterVolume(settings.masterVolume);
-                if (typeof settings.keyVolume === 'number') setKeyVolume(settings.keyVolume);
-                if (typeof settings.enableRelease === 'boolean') setEnableRelease(settings.enableRelease);
-                if (typeof settings.enableError === 'boolean') setEnableError(settings.enableError);
-                if (typeof settings.enableWordComplete === 'boolean') setEnableWordComplete(settings.enableWordComplete);
-                if (typeof settings.enableTestComplete === 'boolean') setEnableTestComplete(settings.enableTestComplete);
-                if (typeof settings.enableVariation === 'boolean') setEnableVariation(settings.enableVariation);
-                if (typeof settings.variationIntensity === 'number') setVariationIntensity(settings.variationIntensity);
+                if (typeof settings.masterVolume === 'number') {
+                    // eslint-disable-next-line react-hooks/set-state-in-effect
+                    setMasterVolume(settings.masterVolume);
+                }
+                if (typeof settings.keyVolume === 'number') {
+                    // eslint-disable-next-line react-hooks/set-state-in-effect
+                    setKeyVolume(settings.keyVolume);
+                }
+                if (typeof settings.enableRelease === 'boolean') {
+                    // eslint-disable-next-line react-hooks/set-state-in-effect
+                    setEnableRelease(settings.enableRelease);
+                }
+                if (typeof settings.enableError === 'boolean') {
+                    // eslint-disable-next-line react-hooks/set-state-in-effect
+                    setEnableError(settings.enableError);
+                }
+                if (typeof settings.enableWordComplete === 'boolean') {
+                    // eslint-disable-next-line react-hooks/set-state-in-effect
+                    setEnableWordComplete(settings.enableWordComplete);
+                }
+                if (typeof settings.enableTestComplete === 'boolean') {
+                    // eslint-disable-next-line react-hooks/set-state-in-effect
+                    setEnableTestComplete(settings.enableTestComplete);
+                }
+                if (typeof settings.enableVariation === 'boolean') {
+                    // eslint-disable-next-line react-hooks/set-state-in-effect
+                    setEnableVariation(settings.enableVariation);
+                }
+                if (typeof settings.variationIntensity === 'number') {
+                    // eslint-disable-next-line react-hooks/set-state-in-effect
+                    setVariationIntensity(settings.variationIntensity);
+                }
             }
         } catch (e) {
             console.error('Failed to load sound settings', e);
@@ -191,8 +216,6 @@ export const useSystem = () => {
         setIncludePunctuation,
         includeNumbers,
         setIncludeNumbers,
-        confidenceMode,
-        setConfidenceMode,
         // Sound settings
         soundStyle,
         setSoundStyle,
@@ -217,6 +240,6 @@ export const useSystem = () => {
         endTest,
         resetTest,
         setStatus,
-        wpmHistory: historyRef.current
+        getWpmHistory: () => historyRef.current
     };
 };

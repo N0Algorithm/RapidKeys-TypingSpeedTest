@@ -1,5 +1,4 @@
 import { useState, useEffect, useMemo } from 'react';
-import { VisualKeyboard } from './VisualKeyboard';
 import { AnimatedReplay } from './AnimatedReplay';
 
 /**
@@ -28,6 +27,7 @@ export const Results = ({ stats, duration, restart, sessionKeys, wpmHistory = []
             consistency = Math.max(0, Math.min(100, Math.round(100 - (stdDev * 2))));
         }
 
+        // eslint-disable-next-line react-hooks/set-state-in-effect
         setCalculations({ wpm, acc, raw, consistency, correct, incorrect });
 
         // Persist History

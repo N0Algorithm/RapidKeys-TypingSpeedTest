@@ -2,7 +2,7 @@ import { useRef, useEffect, useCallback, useState } from 'react';
 import { generateWords } from '../utils/words';
 import { generateQuote } from '../utils/quotes';
 
-export const useTypingEngine = (status, startTest, endTest, resetTest, mode, config, includePunctuation, includeNumbers, confidenceMode) => {
+export const useTypingEngine = (status, startTest, endTest, resetTest, mode, config, includePunctuation, includeNumbers) => {
     // Config-dependent word generation - initialize with empty array to avoid hydration mismatch
     const [words, setWords] = useState([]);
 
@@ -274,9 +274,7 @@ export const useTypingEngine = (status, startTest, endTest, resetTest, mode, con
                 stats.current.correct++;
                 charStates.current[wordIdx][cursor.current.charIndex] = 'correct';
             } else {
-                if (!confidenceMode) {
-                    if (node) node.classList.add('text-incorrect');
-                }
+                if (node) node.classList.add('text-incorrect');
                 stats.current.incorrect++;
                 charStat.errors++;
                 charStates.current[wordIdx][cursor.current.charIndex] = 'incorrect';
@@ -330,7 +328,7 @@ export const useTypingEngine = (status, startTest, endTest, resetTest, mode, con
             window.dispatchEvent(new CustomEvent('test-complete'));
             endTest();
         }
-    }, [words, mode, config, confidenceMode, endTest, addExtraChar]);
+    }, [words, mode, config, endTest, addExtraChar]);
 
 
     const handleKeyDown = useCallback((e) => {

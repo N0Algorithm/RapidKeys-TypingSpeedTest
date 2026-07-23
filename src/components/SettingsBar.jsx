@@ -6,12 +6,18 @@ const SettingsBar = memo(({
     config, setConfig,
     includePunctuation, setIncludePunctuation,
     includeNumbers, setIncludeNumbers,
-    confidenceMode, setConfidenceMode,
     soundStyle,
     onSoundSettingsClick,
     status
 }) => {
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+    const [mounted, setMounted] = useState(false);
+    
+    useEffect(() => {
+        // eslint-disable-next-line react-hooks/set-state-in-effect
+        setMounted(true);
+        return () => setMounted(false);
+    }, []);
 
     if (status !== 'idle') return null;
 
@@ -29,14 +35,7 @@ const SettingsBar = memo(({
         }`;
 
     // --- MOBILE MENU (Full Screen Modal) ---
-    const MobileMenu = () => {
-        // Portal target check
-        const [mounted, setMounted] = useState(false);
-        useEffect(() => {
-            setMounted(true);
-            return () => setMounted(false);
-        }, []);
-
+    const renderMobileMenu = () => {
         if (!mobileMenuOpen || !mounted) return null;
 
         return createPortal(
@@ -94,7 +93,6 @@ const SettingsBar = memo(({
                             <div className="flex gap-2 justify-center flex-wrap">
                                 <button onClick={() => setIncludePunctuation(p => !p)} className={toggleBtnClass(includePunctuation)}>.,!? Punctuation</button>
                                 <button onClick={() => setIncludeNumbers(n => !n)} className={toggleBtnClass(includeNumbers)}># Numbers</button>
-                                <button onClick={() => setConfidenceMode(c => !c)} className={toggleBtnClass(confidenceMode, 'red')}>⚡ Confidence</button>
                             </div>
                         </div>
                     )}
@@ -121,7 +119,7 @@ const SettingsBar = memo(({
     };
 
     // --- DESKTOP BAR (Inline) ---
-    const DesktopBar = () => (
+    const renderDesktopBar = () => (
         <div
             className="hidden md:flex items-center justify-center gap-2 lg:gap-6 mb-8 p-2 rounded-lg bg-black/20 backdrop-blur-sm border border-white/5 animate-in fade-in slide-in-from-top-4 duration-500"
             role="toolbar"
@@ -134,9 +132,6 @@ const SettingsBar = memo(({
                 </button>
                 <button onClick={() => setIncludeNumbers(n => !n)} className={toggleBtnClass(includeNumbers)} title="Toggle Numbers" tabIndex={-1}>
                     <span className="text-base opacity-50">#</span><span className="hidden lg:inline">numbers</span>
-                </button>
-                <button onClick={() => setConfidenceMode(c => !c)} className={toggleBtnClass(confidenceMode, 'red')} title="Confidence Mode" tabIndex={-1}>
-                    <span className="text-base opacity-50">⚡</span><span className="hidden lg:inline">confidence</span>
                 </button>
             </div>
 
@@ -180,7 +175,7 @@ const SettingsBar = memo(({
     );
 
     // --- MOBILE TRIGGER (Visible on small screens) ---
-    const MobileTrigger = () => (
+    const renderMobileTrigger = () => (
         <div className="md:hidden flex justify-center mb-8">
             <button
                 onClick={() => setMobileMenuOpen(true)}
@@ -195,9 +190,9 @@ const SettingsBar = memo(({
 
     return (
         <>
-            <MobileTrigger />
-            <DesktopBar />
-            <MobileMenu />
+            {renderMobileTrigger()}
+            {renderDesktopBar()}
+            {renderMobileMenu()}
         </>
     );
 });

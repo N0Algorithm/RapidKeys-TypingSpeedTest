@@ -42,7 +42,7 @@ const SoundSettings = memo(({
         }`;
 
     // Toggle switch component
-    const Toggle = ({ label, checked, onChange, description }) => (
+    const renderToggle = ({ label, checked, onChange, description }) => (
         <label className="flex items-center justify-between py-2 cursor-pointer group">
             <div className="flex flex-col">
                 <span className="text-sm text-text-primary group-hover:text-[var(--color-caret)] transition-colors">
@@ -71,7 +71,7 @@ const SoundSettings = memo(({
     );
 
     // Slider component
-    const Slider = ({ label, value, onChange, min = 0, max = 1, step = 0.01 }) => (
+    const renderSlider = ({ label, value, onChange, min = 0, max = 1, step = 0.01 }) => (
         <div className="py-2">
             <div className="flex justify-between items-center mb-1">
                 <span className="text-sm text-text-primary">{label}</span>
@@ -101,7 +101,7 @@ const SoundSettings = memo(({
     );
 
     // Section header
-    const SectionHeader = ({ children }) => (
+    const renderSectionHeader = ({ children }) => (
         <h3 className="text-xs uppercase tracking-widest text-text-secondary opacity-60 mt-4 mb-2 first:mt-0">
             {children}
         </h3>
@@ -110,6 +110,7 @@ const SoundSettings = memo(({
     // Portal target check
     const [mounted, setMounted] = useState(false);
     useEffect(() => {
+        // eslint-disable-next-line react-hooks/set-state-in-effect
         setMounted(true);
         return () => setMounted(false);
     }, []);
@@ -140,7 +141,7 @@ const SoundSettings = memo(({
                 {/* Content */}
                 <div className="px-5 py-4 max-h-[70vh] overflow-y-auto">
                     {/* Sound Style */}
-                    <SectionHeader>Sound Style</SectionHeader>
+                    {renderSectionHeader({ children: "Sound Style" })}
                     <div className="flex flex-wrap gap-2 mb-6">
                         {['tick', 'smooth', 'thud', 'clacky', 'thock', 'beep', 'off'].map((style) => (
                             <button
@@ -157,62 +158,62 @@ const SoundSettings = memo(({
                     </div>
 
                     {/* Additional Sounds */}
-                    <SectionHeader>Additional Sounds</SectionHeader>
+                    {renderSectionHeader({ children: "Additional Sounds" })}
                     <div className="space-y-1">
-                        <Toggle
-                            label="Key Release"
-                            description="Soft sound on key up"
-                            checked={enableRelease}
-                            onChange={setEnableRelease}
-                        />
-                        <Toggle
-                            label="Error Sound"
-                            description="Subtle tick on wrong key"
-                            checked={enableError}
-                            onChange={setEnableError}
-                        />
-                        <Toggle
-                            label="Word Complete"
-                            description="Light ding after each word"
-                            checked={enableWordComplete}
-                            onChange={setEnableWordComplete}
-                        />
-                        <Toggle
-                            label="Test Complete"
-                            description="Sound when test ends"
-                            checked={enableTestComplete}
-                            onChange={setEnableTestComplete}
-                        />
+                        {renderToggle({
+                            label: "Key Release",
+                            description: "Soft sound on key up",
+                            checked: enableRelease,
+                            onChange: setEnableRelease
+                        })}
+                        {renderToggle({
+                            label: "Error Sound",
+                            description: "Subtle tick on wrong key",
+                            checked: enableError,
+                            onChange: setEnableError
+                        })}
+                        {renderToggle({
+                            label: "Word Complete",
+                            description: "Light ding after each word",
+                            checked: enableWordComplete,
+                            onChange: setEnableWordComplete
+                        })}
+                        {renderToggle({
+                            label: "Test Complete",
+                            description: "Sound when test ends",
+                            checked: enableTestComplete,
+                            onChange: setEnableTestComplete
+                        })}
                     </div>
 
 
                     {/* Volume Controls */}
-                    <SectionHeader>Volume</SectionHeader>
-                    <Slider
-                        label="Master Volume"
-                        value={masterVolume}
-                        onChange={setMasterVolume}
-                    />
-                    <Slider
-                        label="Key Press Volume"
-                        value={keyVolume}
-                        onChange={setKeyVolume}
-                    />
+                    {renderSectionHeader({ children: "Volume" })}
+                    {renderSlider({
+                        label: "Master Volume",
+                        value: masterVolume,
+                        onChange: setMasterVolume
+                    })}
+                    {renderSlider({
+                        label: "Key Press Volume",
+                        value: keyVolume,
+                        onChange: setKeyVolume
+                    })}
 
                     {/* Advanced */}
-                    <SectionHeader>Advanced</SectionHeader>
-                    <Toggle
-                        label="Sound Variation"
-                        description="Subtle per-key randomness"
-                        checked={enableVariation}
-                        onChange={setEnableVariation}
-                    />
+                    {renderSectionHeader({ children: "Advanced" })}
+                    {renderToggle({
+                        label: "Sound Variation",
+                        description: "Subtle per-key randomness",
+                        checked: enableVariation,
+                        onChange: setEnableVariation
+                    })}
                     {enableVariation && (
-                        <Slider
-                            label="Variation Intensity"
-                            value={variationIntensity}
-                            onChange={setVariationIntensity}
-                        />
+                        renderSlider({
+                            label: "Variation Intensity",
+                            value: variationIntensity,
+                            onChange: setVariationIntensity
+                        })
                     )}
                 </div>
 

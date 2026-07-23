@@ -5,9 +5,7 @@
  * to produce random paragraphs for the typing test.
  */
 
-const COMMON_WORDS = [
-    "the", "be", "of", "and", "a", "to", "in", "he", "have", "it", "that", "for", "they", "i", "with", "as", "not", "on", "she", "at", "by", "this", "we", "you", "do", "but", "from", "or", "which", "one", "would", "all", "will", "there", "say", "who", "make", "when", "can", "more", "if", "no", "man", "out", "other", "so", "what", "time", "up", "go", "about", "than", "into", "could", "state", "only", "new", "year", "some", "take", "come", "these", "know", "see", "use", "get", "like", "then", "first", "any", "work", "now", "may", "such", "give", "over", "think", "most", "even", "find", "day", "also", "after", "way", "many", "must", "look", "before", "great", "back", "through", "long", "where", "much", "should", "well", "people", "down", "own", "just", "because", "good", "each", "those", "feel", "seem", "how", "high", "too", "place", "little", "world", "very", "still", "nation", "hand", "old", "life", "tell", "write", "become", "here", "show", "house", "both", "between", "need", "mean", "call", "develop", "under", "last", "right", "move", "thing", "general", "school", "never", "same", "another", "begin", "while", "number", "part", "turn", "real", "leave", "might", "want", "point", "form", "off", "child", "few", "small", "since", "against", "ask", "late", "home", "interest", "large", "person", "end", "open", "public", "follow", "during", "present", "without", "again", "hold", "govern", "around", "possible", "head", "consider", "word", "program", "problem", "however", "lead", "system", "set", "order", "eye", "plan", "run", "keep", "face", "fact", "group", "play", "stand", "increase", "early", "course", "change", "help", "line"
-];
+import { QUOTES } from './quotes';
 
 const PUNCTUATION = ['.', ',', ';', ':', '?', '!'];
 const NUMBERS = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
@@ -44,31 +42,51 @@ function transformWord(word, usePunctuation, useNumbers) {
  * @returns {Array<Object>} - Array of word objects { string, characters, id }.
  */
 export function generateWords(count = 50, punctuation = false, numbers = false, weakKeys = []) {
-
-    // Create a pool of "biased" words that contain weak keys
-    let biasedWords = [];
+    // Collect sentences to pull words from
+    let pool = [];
     if (weakKeys.length > 0) {
-        biasedWords = COMMON_WORDS.filter(w => weakKeys.some(k => w.includes(k)));
+        // Try to find quotes containing weak keys
+        pool = QUOTES.long.filter(q => weakKeys.some(k => q.toLowerCase().includes(k.toLowerCase())));
+    }
+    
+    // Fallback to all long and medium quotes if pool is empty
+    if (pool.length === 0) {
+        pool = [...QUOTES.long, ...QUOTES.medium];
+    }
+    
+    // Shuffle the pool of quotes
+    pool = pool.sort(() => Math.random() - 0.5);
+
+    // Concatenate quotes until we have enough words
+    let combinedText = '';
+    for (const quote of pool) {
+        combinedText += quote + ' ';
+        if (combinedText.split(' ').length >= count * 1.5) break; // Buffer
     }
 
-    return Array.from({ length: count }, (_, i) => {
-        let rawWord;
+    let rawWords = combinedText.split(' ').filter(w => w.length > 0);
+    
+    // Fallback if we still need more words
+    while (rawWords.length < count) {
+        rawWords = [...rawWords, ...rawWords];
+    }
+    
+    // Take exactly the count requested
+    rawWords = rawWords.slice(0, count);
 
-        // 40% chance to pick a word containing a weak key (if ANY exist)
-        if (biasedWords.length > 0 && Math.random() < 0.4) {
-            rawWord = biasedWords[Math.floor(Math.random() * biasedWords.length)];
-        } else {
-            rawWord = COMMON_WORDS[Math.floor(Math.random() * COMMON_WORDS.length)];
-        }
+    // If punctuation is explicitly OFF, strip it from the quotes
+    if (!punctuation) {
+        rawWords = rawWords.map(w => w.replace(/[.,;:?!]/g, '').toLowerCase());
+    }
+    
+    // If numbers are requested, occasionally inject a number
+    if (numbers) {
+        rawWords = rawWords.map(w => Math.random() < 0.1 ? String(Math.floor(Math.random() * 999)) : w);
+    }
 
-        if (punctuation || numbers) {
-            rawWord = transformWord(rawWord, punctuation, numbers);
-        }
-
-        return {
-            id: `word-${i}`,
-            string: rawWord,
-            chars: rawWord.split(''),
-        };
-    });
+    return rawWords.map((rawWord, i) => ({
+        id: `word-${i}`,
+        string: rawWord,
+        chars: rawWord.split(''),
+    }));
 }

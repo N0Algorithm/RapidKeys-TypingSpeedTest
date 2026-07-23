@@ -10,7 +10,7 @@
  * All quotes preserve original punctuation, capitalization, and spacing.
  */
 
-const QUOTES = {
+export const QUOTES = {
     short: [
         "The secret of getting ahead is getting started.",
         "Be yourself; everyone else is already taken.",
