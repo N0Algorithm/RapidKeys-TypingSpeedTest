@@ -17,7 +17,7 @@ export const useSystem = () => {
     const [includeNumbers, setIncludeNumbers] = useState(false);
 
     // Sound Settings
-    const [soundStyle, setSoundStyle] = useState('tick'); // 'tick' | 'smooth' | 'thud' | 'clacky' | 'thock' | 'beep' | 'off'
+    const [soundStyle, setSoundStyle] = useState('tick'); // 'tick' | 'beep' | 'off'
     const [masterVolume, setMasterVolume] = useState(0.5);
     const [keyVolume, setKeyVolume] = useState(0.8);
     const [enableRelease, setEnableRelease] = useState(false);
@@ -51,42 +51,18 @@ export const useSystem = () => {
             const saved = localStorage.getItem('rapidkeys_sound_settings');
             if (saved) {
                 const settings = JSON.parse(saved);
-                if (settings.soundStyle && ['tick', 'smooth', 'thud', 'clacky', 'thock', 'beep', 'off'].includes(settings.soundStyle)) {
+                if (settings.soundStyle && ['tick', 'beep', 'off'].includes(settings.soundStyle)) {
                     // eslint-disable-next-line react-hooks/set-state-in-effect
                     setSoundStyle(settings.soundStyle);
                 }
-                if (typeof settings.masterVolume === 'number') {
-                    // eslint-disable-next-line react-hooks/set-state-in-effect
-                    setMasterVolume(settings.masterVolume);
-                }
-                if (typeof settings.keyVolume === 'number') {
-                    // eslint-disable-next-line react-hooks/set-state-in-effect
-                    setKeyVolume(settings.keyVolume);
-                }
-                if (typeof settings.enableRelease === 'boolean') {
-                    // eslint-disable-next-line react-hooks/set-state-in-effect
-                    setEnableRelease(settings.enableRelease);
-                }
-                if (typeof settings.enableError === 'boolean') {
-                    // eslint-disable-next-line react-hooks/set-state-in-effect
-                    setEnableError(settings.enableError);
-                }
-                if (typeof settings.enableWordComplete === 'boolean') {
-                    // eslint-disable-next-line react-hooks/set-state-in-effect
-                    setEnableWordComplete(settings.enableWordComplete);
-                }
-                if (typeof settings.enableTestComplete === 'boolean') {
-                    // eslint-disable-next-line react-hooks/set-state-in-effect
-                    setEnableTestComplete(settings.enableTestComplete);
-                }
-                if (typeof settings.enableVariation === 'boolean') {
-                    // eslint-disable-next-line react-hooks/set-state-in-effect
-                    setEnableVariation(settings.enableVariation);
-                }
-                if (typeof settings.variationIntensity === 'number') {
-                    // eslint-disable-next-line react-hooks/set-state-in-effect
-                    setVariationIntensity(settings.variationIntensity);
-                }
+                if (typeof settings.masterVolume === 'number') setMasterVolume(settings.masterVolume);
+                if (typeof settings.keyVolume === 'number') setKeyVolume(settings.keyVolume);
+                if (typeof settings.enableRelease === 'boolean') setEnableRelease(settings.enableRelease);
+                if (typeof settings.enableError === 'boolean') setEnableError(settings.enableError);
+                if (typeof settings.enableWordComplete === 'boolean') setEnableWordComplete(settings.enableWordComplete);
+                if (typeof settings.enableTestComplete === 'boolean') setEnableTestComplete(settings.enableTestComplete);
+                if (typeof settings.enableVariation === 'boolean') setEnableVariation(settings.enableVariation);
+                if (typeof settings.variationIntensity === 'number') setVariationIntensity(settings.variationIntensity);
             }
         } catch (e) {
             console.error('Failed to load sound settings', e);

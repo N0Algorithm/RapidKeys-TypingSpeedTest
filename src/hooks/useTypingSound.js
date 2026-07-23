@@ -1,18 +1,6 @@
 import { useRef, useCallback, useEffect } from 'react';
 
-/**
- * useTypingSound - File-based typing sound system
- * 
- * Features:
- * - 4 file-based styles: Tick, Smooth, Thud, Clacky
- * - 2 programmatic styles: Beep, Silent
- * - Additional sounds: Error, Word Complete, Test Complete
- * - Per-key micro-variation (volume/pitch)
- * - Device-aware tuning (headphones/speakers)
- * - Randomized key variations for natural feel
- * 
- * Sound files are served from /public/sounds/
- */
+// Hook to handle typing sounds (Tick, Beep, and Off modes).
 
 // =============================================================================
 // SOUND FILE MAPPING
@@ -33,35 +21,6 @@ const SOUND_FILES = {
             '/sounds/tick/key6.wav'
         ],
         space: ['/sounds/tick/space1.wav', '/sounds/tick/space2.wav']
-    },
-    smooth: {
-        press: [
-            '/sounds/smooth/banana-s-1.wav',
-            '/sounds/smooth/banana-s-2.wav',
-            '/sounds/smooth/banana-s-3.wav',
-            '/sounds/smooth/banana-s-4.wav',
-            '/sounds/smooth/banana-s-5.wav',
-            '/sounds/smooth/banana-s-6.wav'
-        ]
-    },
-    thud: {
-        press: ['/sounds/thud/Glorious.ogg']
-    },
-    clacky: {
-        press: [
-            '/sounds/clacky/01.wav',
-            '/sounds/clacky/02.wav',
-            '/sounds/clacky/03.wav',
-            '/sounds/clacky/04.wav',
-            '/sounds/clacky/05.wav',
-            '/sounds/clacky/06.wav',
-            '/sounds/clacky/charenter_01.wav',
-            '/sounds/clacky/charenter_02.wav',
-            '/sounds/clacky/charenter_03.wav'
-        ]
-    },
-    thock: {
-        press: ['/sounds/thock/Creams.ogg']
     }
 };
 

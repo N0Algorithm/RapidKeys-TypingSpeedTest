@@ -1,16 +1,7 @@
 import { memo, useState, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 
-/**
- * SoundSettings - Advanced sound settings panel
- * 
- * Features:
- * - Sound style selector (Click/Thock/Linear/Silent/Off)
- * - Toggle switches for additional sounds
- * - Volume sliders with live feedback
- * - Device output selector
- * - Test sound button
- */
+// Sound settings modal component for selecting typing audio styles and volume controls.
 
 const SoundSettings = memo(({
     soundStyle,
@@ -139,11 +130,11 @@ const SoundSettings = memo(({
                 </div>
 
                 {/* Content */}
-                <div className="px-5 py-4 max-h-[70vh] overflow-y-auto">
+                <div className="px-5 py-4 max-h-[70vh] overflow-y-auto scroll-smooth overscroll-contain touch-pan-y">
                     {/* Sound Style */}
                     {renderSectionHeader({ children: "Sound Style" })}
                     <div className="flex flex-wrap gap-2 mb-6">
-                        {['tick', 'smooth', 'thud', 'clacky', 'thock', 'beep', 'off'].map((style) => (
+                        {['tick', 'beep', 'off'].map((style) => (
                             <button
                                 key={style}
                                 onClick={() => {
